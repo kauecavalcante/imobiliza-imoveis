@@ -1,11 +1,16 @@
 .header {
+  /* ATUALIZADO: Usando 'fixed' para garantir que o menu siga a rolagem */
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  
   padding: 1rem 0;
   background-color: var(--white);
   border-bottom: 1px solid #eaeaea;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  z-index: 1000; /* Z-index alto para ficar sobre todo o conteúdo */
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar elevação */
 }
 
 .headerContainer {
@@ -14,6 +19,7 @@
   align-items: center;
 }
 
+/* Estilo padrão da navegação (Desktop) */
 .nav {
   display: flex;
   align-items: center;
@@ -24,6 +30,7 @@
   color: var(--text-color-light);
   font-weight: 500;
   transition: color 0.3s ease;
+  padding: 0.5rem 0;
 }
 
 .navLink:hover {
@@ -42,4 +49,57 @@
 .ctaButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Botão do menu mobile: escondido por padrão */
+.mobileMenuButton {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001; /* Fica acima do menu */
+  font-size: 2rem; /* Tamanho do ícone */
+  color: var(--primary-blue);
+}
+
+/* --- Estilos Responsivos --- */
+
+@media (max-width: 768px) {
+  /* Mostra o botão do menu mobile */
+  .mobileMenuButton {
+    display: block;
+  }
+
+  /* Estiliza o menu para o modo mobile */
+  .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%; /* Menu ocupa 80% da largura da tela */
+    max-width: 320px;
+    height: 100vh;
+    background-color: var(--white);
+    flex-direction: column; /* Links ficam um abaixo do outro */
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transform: translateX(100%); /* Esconde o menu fora da tela */
+    transition: transform 0.3s ease-in-out;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mostra o menu quando o estado está ativo */
+  .navOpen {
+    transform: translateX(0);
+  }
+
+  /* Ajusta o estilo dos links dentro do menu mobile */
+  .navLink {
+    font-size: 1.2rem;
+  }
+
+  .ctaButton {
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+  }
 }

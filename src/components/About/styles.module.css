@@ -4,45 +4,77 @@
 }
 
 .aboutContainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
+  /* ATUALIZADO: Não é mais um grid de 2 colunas, o texto ocupa a largura total */
+  display: block; /* Ou display: flex; flex-direction: column; */
+  max-width: 900px; /* Definindo uma largura máxima para o texto */
+  margin: 0 auto; /* Centraliza o container */
 }
 
 .title {
   font-size: 2.5rem;
   color: var(--primary-blue);
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+  text-align: center; /* Centraliza o título */
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%; /* Centraliza o filete */
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background-color: var(--primary-blue);
+  border-radius: 2px;
+}
+
+.textColumn {
+  /* Garante que o texto ocupe o espaço */
+  text-align: left; /* Alinha o texto à esquerda por padrão */
 }
 
 .textColumn p {
   font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.8;
   color: var(--text-color-light);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .textColumn p:last-child {
   margin-bottom: 0;
 }
 
-.imageColumn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.textColumn strong {
+  color: var(--primary-blue);
+  font-weight: 700;
 }
 
-.imagePlaceholder {
-    width: 100%;
-    max-width: 450px;
-    height: 450px;
-    background-color: var(--light-gray);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color-light);
-    font-style: italic;
-    border: 2px dashed var(--primary-blue);
+/* REMOVIDO: imageColumn e imagePlaceholder não existem mais */
+
+/* --- Media Queries para Responsividade --- */
+
+/* Não precisamos mais de media query para 992px para layout de coluna,
+   mas podemos ajustar o espaçamento ou tamanhos de fonte */
+@media (max-width: 992px) {
+  .aboutContainer {
+    padding: 0 1.5rem; /* Adiciona padding lateral para não colar nas bordas */
+  }
+}
+
+/* Para celulares (até 480px) */
+@media (max-width: 480px) {
+  .about {
+    padding: 4rem 0;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .textColumn p {
+    font-size: 1rem;
+  }
 }

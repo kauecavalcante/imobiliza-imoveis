@@ -4,6 +4,9 @@
   --light-gray: #f4f4f4;
   --text-color: #333333;
   --text-color-light: #555555;
+
+  --accent-blue: #66b3ff; /* Um tom de azul mais claro e vibrante */
+  --pale-blue: #e8f5ff;
 }
 
 * {

@@ -4,13 +4,15 @@ import styles from './styles.module.css';
 const CTA = () => {
   return (
     <section className={styles.cta}>
-      <div className="container">
+      <div className={`container ${styles.ctaContainer}`}>
         <h2 className={styles.title}>Tem um imóvel para alugar?</h2>
         <p className={styles.subtitle}>
           Deixe que especialistas cuidem do seu patrimônio com a segurança e a rentabilidade que você merece.
         </p>
         <Link href="/cadastro" className={styles.ctaButton}>
           Quero cadastrar meu imóvel
+          {/* Ícone adicionado para dar mais ênfase à ação */}
+          <i className={`bx bx-right-arrow-alt ${styles.buttonIcon}`}></i>
         </Link>
       </div>
     </section>
@@ -18,4 +20,3 @@ const CTA = () => {
 };
 
 export default CTA;
-

@@ -165,3 +165,7 @@ a.secondary {
     filter: invert();
   }
 }
+
+.mainContent {
+  padding-top: 77px; 
+}

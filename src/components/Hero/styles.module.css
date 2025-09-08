@@ -1,39 +1,129 @@
 .hero {
-  background-color: var(--light-gray);
-  padding: 6rem 0;
+  /* Substitua 'url(/path/to/your/image.jpg)' pelo caminho real da imagem no seu projeto */
+  /* Se você colocar a imagem na pasta 'public', o caminho seria '/nome-da-sua-imagem.jpg' */
+  background: url('/couple-with-keys.jpg') no-repeat center center;
+  background-size: cover; /* Garante que a imagem cubra todo o espaço */
+  position: relative;
+  height: 90vh; /* Altura de 90% da viewport height */
+  display: flex;
+  align-items: center; /* Centraliza o conteúdo verticalmente */
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  color: var(--white);
   text-align: center;
+  overflow: hidden; /* Garante que a imagem não vaze */
 }
 
-.heroContainer {
-    max-width: 800px;
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay preto com 50% de opacidade */
+  z-index: 1; /* Garante que o overlay fique abaixo do conteúdo */
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2; /* Garante que o conteúdo fique acima do overlay */
+  max-width: 900px;
+  padding: 0 1.5rem; /* Padding lateral para telas menores */
 }
 
 .title {
-  font-size: 3rem;
-  color: var(--primary-blue);
+  font-size: 4rem;
+  font-weight: 800; /* Extra bold */
+  margin-bottom: 1.5rem;
   line-height: 1.2;
-  margin-bottom: 1rem;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para o texto se destacar */
 }
 
 .subtitle {
-  font-size: 1.25rem;
-  color: var(--text-color-light);
+  font-size: 1.5rem;
   margin-bottom: 2.5rem;
+  opacity: 0.9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.heroButton {
-  background-color: var(--primary-blue);
+.ctaButton {
+  background-color: var(--primary-blue); /* Botão com sua cor principal */
   color: var(--white);
-  padding: 1rem 2.5rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.2rem 3rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+  transition: all 0.3s ease-in-out;
   display: inline-block;
+  border: 2px solid transparent; /* Borda transparente inicial */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-.heroButton:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+.ctaButton:hover {
+  background-color: var(--white); /* Fundo branco no hover */
+  color: var(--primary-blue); /* Texto azul no hover */
+  border: 2px solid var(--primary-blue); /* Borda azul no hover */
+  transform: translateY(-5px); /* Efeito de elevação */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Media Queries para Responsividade --- */
+
+/* Para tablets (até 992px) */
+@media (max-width: 992px) {
+  .hero {
+    height: 75vh; /* Altura um pouco menor */
+  }
+
+  .title {
+    font-size: 3rem; /* Título menor */
+  }
+
+  .subtitle {
+    font-size: 1.3rem; /* Subtítulo menor */
+  }
+
+  .ctaButton {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* Para celulares (até 768px) */
+@media (max-width: 768px) {
+  .hero {
+    height: 65vh; /* Altura ainda menor */
+  }
+
+  .title {
+    font-size: 2.5rem; /* Título mais ajustado para celular */
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem; /* Subtítulo ajustado */
+    margin-bottom: 2rem;
+  }
+
+  .ctaButton {
+    width: 90%; /* Botão quase na largura total */
+    max-width: 300px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Para celulares pequenos (até 480px) */
+@media (max-width: 480px) {
+  .hero {
+    height: 55vh; /* Ajuste final para telas bem pequenas */
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
 }

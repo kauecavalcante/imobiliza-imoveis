@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './animations.css'; // ADICIONE ESTA LINHA
 import WhatsAppButton from '../components/WhatsAppButton';
 
 export const metadata: Metadata = {

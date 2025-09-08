@@ -1,3 +1,4 @@
+/* ATUALIZADO: Estilos completos para a seção de Compromisso */
 .commitment {
   padding: 6rem 0;
   background-color: var(--light-gray);
@@ -14,42 +15,114 @@
   font-size: 1.1rem;
   color: var(--text-color-light);
   max-width: 700px;
-  margin: 0 auto 3rem auto;
+  margin: 0 auto 3.5rem auto;
 }
 
-.commitmentList {
-  list-style: none;
-  max-width: 800px;
+.commitmentGrid {
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 2rem; 
+  max-width: 1200px;
   margin: 0 auto;
   text-align: left;
+}
+
+.commitmentCard {
+  background-color: var(--white);
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  flex: 0 0 calc(33.333% - 1.333rem); 
+  max-width: 350px; 
 }
 
-.commitmentItem {
-  background-color: var(--white);
-  padding: 1.25rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+.commitmentCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.checkIcon {
-    color: var(--primary-blue);
-    font-weight: bold;
-    font-size: 1.5rem;
+.iconWrapper {
+  margin-bottom: 0.5rem;
 }
 
-.conclusion {
-    font-size: 1.1rem;
-    font-style: italic;
-    margin-top: 3rem;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
-    color: var(--text-color);
+.icon {
+  font-size: 3rem;
+  color: var(--primary-blue);
+}
+
+.cardTitle {
+  font-size: 1.3rem;
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.cardDescription {
+  font-size: 1rem;
+  color: var(--text-color-light);
+  line-height: 1.6;
+}
+
+/* ATUALIZADO: Estilo da caixa de conclusão com fundo sutil */
+.conclusionText {
+  font-size: 1.25rem; 
+  margin-top: 5rem; 
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--text-color); 
+  line-height: 1.8;
+  font-weight: 500; 
+  padding: 1.5rem 2rem;
+  /*
+    #0A225C -> rgb(10, 34, 92)
+    Usamos a cor RGB do seu --primary-blue com 5% de opacidade (alpha = 0.05)
+  */
+  background-color: rgba(10, 34, 92, 0.05); /* Fundo sutil com a cor principal */
+  border-left: 5px solid var(--primary-blue); /* Borda com a cor principal */
+  border-radius: 8px; 
+  text-align: left; 
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.conclusionText strong {
+    color: var(--primary-blue); 
+    font-weight: 700;
+}
+
+/* Media queries para responsividade */
+@media (max-width: 991px) {
+  .commitmentCard {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+  .commitmentCard {
+    padding: 2rem 1.5rem;
+    flex: 0 0 100%;
+    max-width: 400px;
+  }
+  .cardTitle {
+    font-size: 1.2rem;
+  }
+  .cardDescription {
+    font-size: 0.95rem;
+  }
+  .conclusionText {
+      font-size: 1.1rem;
+      margin-top: 3.5rem;
+      padding: 1.2rem 1.5rem;
+  }
 }
