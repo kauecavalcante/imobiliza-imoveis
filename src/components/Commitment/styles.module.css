@@ -1,0 +1,55 @@
+.commitment {
+  padding: 6rem 0;
+  background-color: var(--light-gray);
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-color-light);
+  max-width: 700px;
+  margin: 0 auto 3rem auto;
+}
+
+.commitmentList {
+  list-style: none;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.commitmentItem {
+  background-color: var(--white);
+  padding: 1.25rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.checkIcon {
+    color: var(--primary-blue);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.conclusion {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-top: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--text-color);
+}

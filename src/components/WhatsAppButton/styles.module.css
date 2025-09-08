@@ -1,0 +1,26 @@
+.whatsappButton {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #25D366; /* Cor oficial do WhatsApp */
+  color: #FFF;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Garante que fique sobre os outros elementos */
+  transition: transform 0.3s ease-in-out;
+}
+
+.whatsappButton:hover {
+  transform: scale(1.1) rotate(10deg); /* Efeito ao passar o mouse */
+}
+
+/* Adiciona estilo para o ícone */
+.whatsappIcon {
+  font-size: 32px; /* Ajusta o tamanho do ícone */
+}
+

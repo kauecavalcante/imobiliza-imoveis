@@ -1,0 +1,44 @@
+.cta {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 8px;
+  margin: 4rem auto;
+  max-width: 1200px;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  max-width: 650px;
+  margin: 0 auto 2.5rem auto;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.ctaButton {
+  background-color: #ffffff;
+  color: var(--primary-color);
+  padding: 0.9rem 2.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ctaButton:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
