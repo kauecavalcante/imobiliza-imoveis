@@ -1,0 +1,456 @@
+.pageContainer {
+  padding: 4rem 0 6rem 0;
+  background-color: var(--light-gray);
+  min-height: 80vh;
+}
+
+.formWrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 2.5rem 3rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.pageTitle {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.pageSubtitle {
+  font-size: 1.1rem;
+  color: var(--text-color-light);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* Progress Bar */
+.progressBar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.progressBar::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 100%;
+  background-color: #e0e0e0;
+  z-index: 1;
+}
+
+.progressBar::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  background-color: var(--primary-blue);
+  z-index: 2;
+  width: calc((var(--step, 1) - 1) * 33.33%);
+  transition: width 0.4s ease;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  width: 80px;
+  text-align: center;
+}
+
+.progressStep span {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #999;
+  font-weight: bold;
+  transition: all 0.4s ease;
+  border: 4px solid var(--light-gray);
+}
+
+.progressStep.active span {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--light-gray);
+}
+
+.progressStep p {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.progressStep.active p {
+  color: var(--primary-blue);
+}
+
+/* Form Steps */
+.formStep {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stepTitle {
+  font-size: 1.8rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.subStepTitle {
+  font-size: 1.4rem;
+  color: var(--primary-blue);
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color-light);
+}
+
+.inputGroup input[type="text"],
+.inputGroup input[type="email"],
+.inputGroup input[type="tel"],
+.inputGroup input[type="number"],
+.inputGroup input[type="date"],
+.inputGroup select,
+.inputGroup textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fafafa;
+}
+
+.inputGroup textarea {
+    resize: none;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus,
+.inputGroup textarea:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(10, 34, 92, 0.1);
+  background-color: var(--white);
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.subInput {
+  margin-top: 0.5rem;
+}
+
+.conjugeSection {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #ddd;
+}
+
+.radioGroup, .radioGroupVertical {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+.radioGroupVertical {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.2rem;
+}
+.radioGroup label, .radioGroupVertical label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  color: var(--text-color);
+}
+.radioGroup input, .radioGroupVertical input {
+  accent-color: var(--primary-blue);
+}
+
+.fileUploadInput {
+  display: none;
+}
+
+.fileUploadLabel {
+  background-color: #f0f0f0;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.fileUploadLabel:hover {
+  border-color: var(--primary-blue);
+  background-color: rgba(10, 34, 92, 0.05);
+}
+
+.fileUploadLabel i {
+  font-size: 2.5rem;
+  color: var(--primary-blue);
+}
+
+.fileUploadLabel span {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.fileList {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fileListItem {
+  background-color: #f9f9f9;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: var(--text-color-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fileListItem span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.removeFileButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 0;
+}
+.removeFileButton:hover {
+    color: #d32f2f;
+}
+
+.fieldDescription {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.termsBox {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.termsBox p {
+  font-size: 0.9rem;
+  color: var(--text-color-light);
+  margin-bottom: 0.5rem;
+}
+.termsBox p:last-child {
+  margin-bottom: 0;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.checkboxGroup label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.checkboxGroup input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-blue);
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.prevButton, .nextButton, .submitButton {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nextButton, .submitButton {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.nextButton:hover, .submitButton:hover {
+  background-color: #061842;
+}
+
+.prevButton {
+  background-color: #f0f0f0;
+  color: var(--text-color);
+}
+
+.prevButton:hover {
+  background-color: #e0e0e0;
+}
+
+.submitButton:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #d32f2f;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  background-color: rgba(211, 47, 47, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+.inputGroup.error label {
+  color: #d32f2f;
+}
+
+.inputGroup.error input[type="text"],
+.inputGroup.error input[type="email"],
+.inputGroup.error input[type="tel"],
+.inputGroup.error input[type="number"],
+.inputGroup.error select,
+.inputGroup.error textarea {
+  border-color: #d32f2f;
+  background-color: #fff8f8;
+}
+
+.errorInput {
+  border-color: #d32f2f !important;
+  background-color: #fff8f8 !important;
+}
+
+.conditionalField {
+  animation: fadeIn 0.5s ease-in-out;
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+/* Success State */
+.successContainer {
+    text-align: center;
+    padding: 6rem 0;
+}
+.successIcon {
+    font-size: 6rem;
+    color: #4caf50;
+    margin-bottom: 1.5rem;
+}
+.backButton {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2.5rem;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.backButton:hover {
+    background-color: #061842;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .formWrapper {
+    padding: 2rem 1.5rem;
+  }
+  .inputGrid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .progressStep p {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .pageContainer {
+    padding: 77px 0 0 0;
+  }
+
+  .formWrapper {
+    width: 100%;
+    min-height: calc(100vh - 77px);
+    padding: 2rem 1rem;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  .pageTitle {
+    font-size: 2rem;
+  }
+}

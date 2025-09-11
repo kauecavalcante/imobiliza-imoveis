@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import './animations.css'; // ADICIONE ESTA LINHA
+import './animations.css'; // Importa as animações
 import WhatsAppButton from '../components/WhatsAppButton';
+import { Toaster } from 'sonner'; // NOVO: Importa o Toaster
 
 export const metadata: Metadata = {
   title: 'Imobiliza Imóveis',
@@ -16,7 +17,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        {/* Adiciona a folha de estilos do Boxicons */}
         <link
           href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
           rel="stylesheet"
@@ -25,6 +25,8 @@ export default function RootLayout({
       <body>
         {children}
         <WhatsAppButton />
+        {/* NOVO: Adiciona o componente Toaster aqui */}
+        <Toaster richColors position="bottom-right" />
       </body>
     </html>
   );
