@@ -108,7 +108,7 @@ export const useCadastroForm = () => {
             } finally { setIsCepLoading(false); }
         }
     };
-    
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files: inputFiles } = e.target;
         if (inputFiles && inputFiles.length > 0) {
@@ -135,7 +135,7 @@ export const useCadastroForm = () => {
             [fieldName]: prev[fieldName].filter((_, index) => index !== indexToRemove)
         }));
     };
-    
+
     const scrollToTop = () => {
         const formContainer = document.getElementById('form-container');
         if (formContainer) {
@@ -195,7 +195,7 @@ export const useCadastroForm = () => {
                 uploadMultipleFiles(files.comprovanteRenda, 'comprovantes-renda'),
                 uploadMultipleFiles(files.documentosConjuge, 'documentos-conjuge')
             ]);
-            
+
             // Extrai apenas os caminhos para salvar no Firestore
             const filePaths = {
                 documentosPessoais: docsPessoaisFiles.map(f => f.path),
@@ -207,7 +207,7 @@ export const useCadastroForm = () => {
             if (finalFormData.estadoCivil !== 'Casado(a)') {
                 Object.keys(finalFormData).forEach(key => {
                     if (key.startsWith('conjuge')) {
-                        // @ts-expect-error
+                        // @ts-expect-error We are dynamically clearing spouse data, and TypeScript can't infer the key type correctly here.
                         finalFormData[key] = '';
                     }
                 });
