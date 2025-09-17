@@ -404,6 +404,18 @@
   border: 1px solid #eee;
 }
 
+/* NOVO: Estilo para o campo de data não-editável */
+.dateDisplay {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  color: #555;
+  cursor: not-allowed;
+}
+
 .successContainer {
     text-align: center;
     padding: 6rem 0;
@@ -433,7 +445,8 @@
   }
   .inputGrid {
     grid-template-columns: 1fr;
-    gap: 0;
+    /* CORREÇÃO: Substituí 'gap: 0' por 'row-gap' para adicionar espaçamento vertical */
+    row-gap: 1.5rem;
   }
   .progressStep p {
     font-size: 0.75rem;

@@ -2,6 +2,13 @@
 import { validateCPF } from '@/lib/formatters';
 import { IFormData } from '../types';
 
+// Função para validar o formato de um e-mail usando uma expressão regular
+export const validateEmail = (email: string): boolean => {
+  if (!email) return false;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
 export const validateStep = (step: number, formData: IFormData): string[] => {
   const errors: string[] = [];
   let requiredFields: (keyof IFormData)[] = [];
@@ -32,12 +39,27 @@ export const validateStep = (step: number, formData: IFormData): string[] => {
     }
   });
 
+  // Validações específicas de formato
   if (step === 1) {
     if (formData.cpf && !validateCPF(formData.cpf)) {
       errors.push('cpf');
     }
+    // Adiciona a validação para os campos de e-mail da primeira etapa
+    if (formData.email && !validateEmail(formData.email)) {
+      errors.push('email');
+    }
+    if (formData.emailComunicacao && !validateEmail(formData.emailComunicacao)) {
+      errors.push('emailComunicacao');
+    }
     if (formData.estadoCivil === 'Casado(a)' && formData.conjugeCpf && !validateCPF(formData.conjugeCpf)) {
       errors.push('conjugeCpf');
+    }
+  }
+
+  if (step === 3) {
+    // Adiciona a validação para o e-mail do fiador na terceira etapa
+    if (formData.garantiaContratual === 'FIADOR' && formData.emailFiador && !validateEmail(formData.emailFiador)) {
+      errors.push('emailFiador');
     }
   }
 

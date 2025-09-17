@@ -26,7 +26,8 @@ export default function CadastroPage() {
             <Header />
             <main className={styles.pageContainer}>
                 <div className="container">
-                    <div className={styles.formWrapper}>
+                    {/* Adicionado um ID para ser o alvo da rolagem */}
+                    <div id="form-container" className={styles.formWrapper}>
                         <h1 className={styles.pageTitle}>Ficha Cadastral para Locação</h1>
                         <p className={styles.pageSubtitle}>
                             Preencha os campos abaixo para iniciar sua proposta de locação.
@@ -47,7 +48,3 @@ export default function CadastroPage() {
         </>
     );
 }
-
-// Nota: Você precisará criar os componentes Step1, Step2, Step3, Step4 e ProgressBar
-// movendo o JSX correspondente de sua `page.tsx` original para cada um desses arquivos.
-// Eles receberão `form` como prop para acessar o estado e as funções do hook.

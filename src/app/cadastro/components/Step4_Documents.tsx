@@ -10,6 +10,17 @@ interface StepProps {
 const Step4_Documents: React.FC<StepProps> = ({ form }) => {
   const { formData, files, handleFileChange, handleRemoveFile, handleInputChange, prevStep, isLoading } = form;
 
+  // Função para formatar a data para o padrão brasileiro (dd/mm/aaaa)
+  const formatDate = (dateString: string) => {
+    // Adiciona T00:00:00 para evitar problemas de fuso horário na conversão
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div className={`${styles.formStep} ${styles.animateFadeIn}`}>
       <h2 className={styles.stepTitle}>Anexar Documentos</h2>
@@ -49,8 +60,11 @@ const Step4_Documents: React.FC<StepProps> = ({ form }) => {
         <label><input type="checkbox" name="aceiteVeracidade" checked={formData.aceiteVeracidade} onChange={handleInputChange} required /><span>Declaro que todas as informações prestadas são verdadeiras... *</span></label>
       </div>
       <div className={styles.inputGroup}>
-        <label htmlFor="dataPreenchimento">Data</label>
-        <input type="date" name="dataPreenchimento" id="dataPreenchimento" value={formData.dataPreenchimento} onChange={handleInputChange} readOnly />
+        <label>Data</label>
+        {/* Campo de data alterado para um parágrafo não editável */}
+        <p className={styles.dateDisplay}>
+          {formatDate(formData.dataPreenchimento)}
+        </p>
       </div>
 
       <div className={styles.buttonGroup}>

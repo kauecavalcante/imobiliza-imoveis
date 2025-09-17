@@ -135,6 +135,13 @@ export const useCadastroForm = () => {
             [fieldName]: prev[fieldName].filter((_, index) => index !== indexToRemove)
         }));
     };
+    
+    const scrollToTop = () => {
+        const formContainer = document.getElementById('form-container');
+        if (formContainer) {
+            formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     const nextStep = () => {
         const errors = validateStepUtil(step, formData);
@@ -142,7 +149,7 @@ export const useCadastroForm = () => {
 
         if (errors.length === 0) {
             setStep(prev => prev + 1);
-            window.scrollTo(0, 0);
+            scrollToTop();
         } else {
             toast.error('Por favor, preencha todos os campos obrigatórios (*).');
             setTimeout(() => {
@@ -155,6 +162,7 @@ export const useCadastroForm = () => {
     const prevStep = () => {
         setValidationErrors([]);
         setStep(prev => prev - 1);
+        scrollToTop();
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -173,19 +181,27 @@ export const useCadastroForm = () => {
             const uploadFile = async (file: File, path: string) => {
                 const fileRef = ref(storage, `${path}/${Date.now()}-${file.name}`);
                 await uploadBytes(fileRef, file);
-                return getDownloadURL(fileRef);
+                // Vamos pegar a URL de download aqui para enviar no e-mail
+                const url = await getDownloadURL(fileRef);
+                return { path: fileRef.fullPath, url: url, name: file.name };
             };
 
             const uploadMultipleFiles = (fileList: File[], path: string) => {
-                const promises = fileList.map(file => uploadFile(file, path));
-                return Promise.all(promises);
+                return Promise.all(fileList.map(file => uploadFile(file, path)));
             };
 
-            const [docsPessoaisUrls, comprovanteRendaUrls, docsConjugeUrls] = await Promise.all([
+            const [docsPessoaisFiles, comprovanteRendaFiles, docsConjugeFiles] = await Promise.all([
                 uploadMultipleFiles(files.documentosPessoais, 'documentos-pessoais'),
                 uploadMultipleFiles(files.comprovanteRenda, 'comprovantes-renda'),
                 uploadMultipleFiles(files.documentosConjuge, 'documentos-conjuge')
             ]);
+            
+            // Extrai apenas os caminhos para salvar no Firestore
+            const filePaths = {
+                documentosPessoais: docsPessoaisFiles.map(f => f.path),
+                comprovanteRenda: comprovanteRendaFiles.map(f => f.path),
+                documentosConjuge: docsConjugeFiles.map(f => f.path)
+            };
 
             const finalFormData = { ...formData, cpf: unmask(formData.cpf), conjugeCpf: unmask(formData.conjugeCpf), telefone: unmask(formData.telefone), conjugeTelefone: unmask(formData.conjugeTelefone), rendaMensal: unmask(formData.rendaMensal) };
             if (finalFormData.estadoCivil !== 'Casado(a)') {
@@ -199,13 +215,30 @@ export const useCadastroForm = () => {
 
             await addDoc(collection(db, "propostasLocacao"), {
                 ...finalFormData,
-                fileURLs: { documentosPessoais: docsPessoaisUrls, comprovanteRenda: comprovanteRendaUrls, documentosConjuge: docsConjugeUrls },
+                filePaths: filePaths,
                 dataEnvio: new Date().toISOString()
+            });
+
+            // Prepara os dados dos arquivos com URLs para o e-mail
+            const filesForEmail = {
+                documentosPessoais: docsPessoaisFiles,
+                comprovanteRenda: comprovanteRendaFiles,
+                documentosConjuge: docsConjugeFiles
+            };
+
+            // Envia a notificação por e-mail via nossa nova API
+            await fetch('/api/send-notification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    formData: finalFormData,
+                    files: filesForEmail
+                })
             });
 
             setIsSuccess(true);
         } catch (err) {
-            console.error(err);
+            console.error("Erro detalhado:", err);
             toast.error('Ocorreu um erro ao enviar sua proposta. Tente novamente mais tarde.');
         } finally {
             setIsLoading(false);
