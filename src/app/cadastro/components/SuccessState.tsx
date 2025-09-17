@@ -2,6 +2,7 @@
 import styles from '../cadastro.module.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 const SuccessState = () => (
   <>
@@ -13,7 +14,7 @@ const SuccessState = () => (
         <p className={styles.pageSubtitle}>
           Recebemos suas informações com sucesso. Nossa equipe analisará e entrará em contato em breve.
         </p>
-        <a href="/" className={styles.backButton}>Voltar para a Página Inicial</a>
+        <Link href="/" className={styles.backButton}>Voltar para a Página Inicial</Link>
       </div>
     </main>
     <Footer />

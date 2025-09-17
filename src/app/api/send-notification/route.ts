@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       `;
     };
     
-    const dataItem = (label: string, value: any, fullWidth = false) => {
+    const dataItem = (label: string, value: string | boolean | number, fullWidth = false) => {
         if (!value) return '';
         return `<div class="data-item ${fullWidth ? 'full-width' : ''}">
                   <p>

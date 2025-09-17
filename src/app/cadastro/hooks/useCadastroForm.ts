@@ -67,7 +67,7 @@ export const useCadastroForm = () => {
 
     useEffect(() => {
         if (validationErrors.length > 0) setValidationErrors([]);
-    }, [formData]);
+    }, [formData, validationErrors.length]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
@@ -207,7 +207,7 @@ export const useCadastroForm = () => {
             if (finalFormData.estadoCivil !== 'Casado(a)') {
                 Object.keys(finalFormData).forEach(key => {
                     if (key.startsWith('conjuge')) {
-                        // @ts-ignore
+                        // @ts-expect-error
                         finalFormData[key] = '';
                     }
                 });
