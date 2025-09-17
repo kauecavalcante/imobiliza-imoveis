@@ -25,7 +25,7 @@ export default function Home() {
       
       <AnimateOnScroll animationClass="fade-in-up">
         <CTA />
-      </AnimateOnScroll>
+      </AnimateOnScroll> 
       
       <Footer />
     </main>
