@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { Resend } from 'resend';
 
-// Verifique se a chave da API está sendo carregada corretamente
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
@@ -12,7 +11,6 @@ export async function POST(request: NextRequest) {
     const fromEmail = process.env.FROM_EMAIL;
     const adminEmail = process.env.ADMIN_EMAIL;
 
-    // Validação robusta das variáveis de ambiente
     if (!process.env.RESEND_API_KEY) {
         console.error('Chave da API do Resend não encontrada nas variáveis de ambiente.');
         return NextResponse.json({ error: 'Configuração do servidor incompleta.' }, { status: 500 });
@@ -77,7 +75,6 @@ export async function POST(request: NextRequest) {
       html: emailHtml,
     });
 
-    // Se o Resend retornar um erro, ele será capturado e enviado como resposta
     if (error) {
         console.error('Erro retornado pelo Resend:', error);
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -85,9 +82,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: 'E-mail para o fiador enviado com sucesso!', data });
 
-  } catch (error: any) {
-    // Se ocorrer qualquer outro erro, ele também será enviado como resposta
+  // A LINHA ABAIXO FOI CORRIGIDA
+  } catch (error: unknown) {
     console.error('Erro na API send-to-fiador:', error);
-    return NextResponse.json({ error: error.message || 'Ocorreu um erro inesperado no servidor.' }, { status: 500 });
+    // Verificamos se o erro é um objeto do tipo Error antes de acessar a propriedade 'message'
+    if (error instanceof Error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'Ocorreu um erro inesperado no servidor.' }, { status: 500 });
   }
 }
