@@ -1,15 +1,15 @@
-// src/app/cadastro/hooks/useCadastroForm.ts
-import { useState, useEffect } from 'react';
+// src/app/fiador/hooks/useFiadorForm.ts
+import { useState, useEffect, FormEvent } from 'react';
 import { toast } from 'sonner';
 import { maskCPF, maskPhone, maskCurrency, unmask } from '@/lib/formatters';
-import { IFormData, IFileState } from '../types';
-import { validateStep as validateStepUtil } from '../utils/validation';
+import { IFormDataFiador, IFileStateFiador } from '../types';
+import { validateStepFiador } from '../utils/validationFiador';
 import { db, storage } from '@/lib/firebase';
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 
-const initialState: IFormData = {
+const initialState: IFormDataFiador = {
     email: '',
     nomeCompleto: '',
     nacionalidade: 'Brasileira',
@@ -26,7 +26,6 @@ const initialState: IFormData = {
     cidade: '',
     estado: '',
     telefone: '',
-    // emailComunicacao removido
     conjugeNome: '',
     conjugeNacionalidade: 'Brasileiro(a)',
     conjugeNacionalidadeOutra: '',
@@ -35,38 +34,38 @@ const initialState: IFormData = {
     conjugeCpf: '',
     conjugeTelefone: '',
     rendaMensal: '',
-    // Campos de referência divididos
     referenciaPessoal01Nome: '',
     referenciaPessoal01Telefone: '',
     referenciaPessoal02Nome: '',
     referenciaPessoal02Telefone: '',
-    imovelDesejado: '',
-    condicaoProposta: '',
-    vencimentoAluguel: '5',
-    animaisEstimacao: '',
-    garantiaContratual: 'FIADOR',
-    emailFiador: '',
     cartorioFirma: '',
     aceiteObservacoes: false,
     aceiteReserva: false,
     aceiteVeracidade: false,
     dataPreenchimento: new Date().toISOString().split('T')[0],
+    locatarioPrincipal: '',
 };
 
-const fileInitialState: IFileState = {
+const fileInitialState: IFileStateFiador = {
     documentosPessoais: [],
     comprovanteRenda: [],
     documentosConjuge: [],
 };
 
-export const useCadastroForm = () => {
+export const useFiadorForm = (locatario: string | null) => {
     const [step, setStep] = useState(1);
-    const [formData, setFormData] = useState<IFormData>(initialState);
-    const [files, setFiles] = useState<IFileState>(fileInitialState);
+    const [formData, setFormData] = useState<IFormDataFiador>({...initialState, locatarioPrincipal: locatario || ''});
+    const [files, setFiles] = useState<IFileStateFiador>(fileInitialState);
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isCepLoading, setIsCepLoading] = useState(false);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (locatario) {
+            setFormData(prev => ({...prev, locatarioPrincipal: locatario}));
+        }
+    }, [locatario]);
 
     useEffect(() => {
         if (validationErrors.length > 0) setValidationErrors([]);
@@ -83,13 +82,9 @@ export const useCadastroForm = () => {
         const isCheckbox = type === 'checkbox';
         const checked = isCheckbox ? (e.target as HTMLInputElement).checked : undefined;
 
-        if (name === 'garantiaContratual' && value !== 'FIADOR') {
-            setFormData(prev => ({ ...prev, garantiaContratual: value, emailFiador: '' }));
-        } else {
-            setFormData(prev => ({ ...prev, [name]: isCheckbox ? checked : finalValue }));
-        }
+        setFormData(prev => ({ ...prev, [name]: isCheckbox ? checked : finalValue }));
     };
-
+    
     const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const cep = e.target.value.replace(/\D/g, '');
         setFormData(prev => ({ ...prev, cep: cep }));
@@ -115,7 +110,7 @@ export const useCadastroForm = () => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, files: inputFiles } = e.target;
         if (inputFiles && inputFiles.length > 0) {
-            const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+            const MAX_FILE_SIZE = 10 * 1024 * 1024;
             const newFiles: File[] = Array.from(inputFiles);
 
             const oversizedFiles = newFiles.filter(file => file.size > MAX_FILE_SIZE);
@@ -126,13 +121,13 @@ export const useCadastroForm = () => {
 
             setFiles(prev => ({
                 ...prev,
-                [name]: [...prev[name as keyof IFileState], ...newFiles]
+                [name as keyof IFileStateFiador]: [...prev[name as keyof IFileStateFiador], ...newFiles]
             }));
         }
         e.target.value = '';
     };
 
-    const handleRemoveFile = (fieldName: keyof IFileState, indexToRemove: number) => {
+    const handleRemoveFile = (fieldName: keyof IFileStateFiador, indexToRemove: number) => {
         setFiles(prev => ({
             ...prev,
             [fieldName]: prev[fieldName].filter((_, index) => index !== indexToRemove)
@@ -140,14 +135,14 @@ export const useCadastroForm = () => {
     };
 
     const scrollToTop = () => {
-        const formContainer = document.getElementById('form-container');
+        const formContainer = document.getElementById('form-container-fiador');
         if (formContainer) {
             formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
     const nextStep = () => {
-        const errors = validateStepUtil(step, formData);
+        const errors = validateStepFiador(step, formData);
         setValidationErrors(errors);
 
         if (errors.length === 0) {
@@ -168,13 +163,13 @@ export const useCadastroForm = () => {
         scrollToTop();
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         if (!formData.aceiteObservacoes || !formData.aceiteReserva || !formData.aceiteVeracidade) {
             toast.error('Você deve concordar com todos os termos para finalizar.');
             return;
         }
-        // Validação de arquivos removida para torná-los opcionais
         setIsLoading(true);
 
         try {
@@ -190,9 +185,9 @@ export const useCadastroForm = () => {
             };
 
             const [docsPessoaisFiles, comprovanteRendaFiles, docsConjugeFiles] = await Promise.all([
-                uploadMultipleFiles(files.documentosPessoais, 'documentos-pessoais'),
-                uploadMultipleFiles(files.comprovanteRenda, 'comprovantes-renda'),
-                uploadMultipleFiles(files.documentosConjuge, 'documentos-conjuge')
+                uploadMultipleFiles(files.documentosPessoais, 'fiador-documentos-pessoais'),
+                uploadMultipleFiles(files.comprovanteRenda, 'fiador-comprovantes-renda'),
+                uploadMultipleFiles(files.documentosConjuge, 'fiador-documentos-conjuge')
             ]);
 
             const filePaths = {
@@ -217,12 +212,12 @@ export const useCadastroForm = () => {
                 Object.keys(finalFormData).forEach(key => {
                     if (key.startsWith('conjuge')) {
                         // @ts-expect-error We are dynamically clearing spouse data
-                        finalFormData[key] = '';
+                        finalFormData[key as keyof IFormDataFiador] = '';
                     }
                 });
             }
 
-            await addDoc(collection(db, "propostasLocacao"), {
+            await addDoc(collection(db, "propostasFiador"), {
                 ...finalFormData,
                 filePaths: filePaths,
                 dataEnvio: new Date().toISOString()
@@ -234,7 +229,7 @@ export const useCadastroForm = () => {
                 documentosConjuge: docsConjugeFiles
             };
 
-            await fetch('/api/send-notification', {
+            await fetch('/api/send-notification-fiador', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -266,6 +261,7 @@ export const useCadastroForm = () => {
         handleRemoveFile,
         nextStep,
         prevStep,
-        handleSubmit
+        handleSubmit,
+        setFormData
     };
 };

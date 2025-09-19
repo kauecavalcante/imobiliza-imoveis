@@ -1,17 +1,26 @@
 import React from 'react';
-import styles from '../cadastro.module.css';
-import { useCadastroForm } from '../hooks/useCadastroForm';
+import styles from '@/app/cadastro/cadastro.module.css'; // Usando o CSS do cadastro
+import { useFiadorForm } from '../hooks/useFiadorForm';
 
 interface StepProps {
-  form: ReturnType<typeof useCadastroForm>;
+  form: ReturnType<typeof useFiadorForm>;
+  locatarioNome: string;
 }
 
-const Step1_PersonalData: React.FC<StepProps> = ({ form }) => {
+const Step1_DadosFiador: React.FC<StepProps> = ({ form, locatarioNome }) => {
   const { formData, validationErrors, handleInputChange, handleCepChange, isCepLoading, nextStep } = form;
 
   return (
     <div className={`${styles.formStep} ${styles.animateFadeIn}`}>
-      <h2 className={styles.stepTitle}>Dados do Pretendente (Locatário)</h2>
+      {/* Exibe para qual locatário este cadastro de fiador se destina */}
+      {locatarioNome && locatarioNome !== 'Não identificado' && (
+        <div className={styles.termsBox} style={{marginBottom: '2rem'}}>
+          <p>Você está preenchendo o cadastro como fiador para: <strong>{locatarioNome}</strong></p>
+        </div>
+      )}
+
+      <h2 className={styles.stepTitle}>Dados do Fiador</h2>
+      
       <div className={`${styles.inputGroup} ${validationErrors.includes('nomeCompleto') ? styles.error : ''}`}>
         <label htmlFor="nomeCompleto">Nome Completo *</label>
         <input type="text" name="nomeCompleto" id="nomeCompleto" value={formData.nomeCompleto} onChange={handleInputChange} required />
@@ -19,8 +28,6 @@ const Step1_PersonalData: React.FC<StepProps> = ({ form }) => {
       <div className={`${styles.inputGroup} ${validationErrors.includes('email') ? styles.error : ''}`}>
         <label htmlFor="email">Email *</label>
         <input type="email" name="email" id="email" value={formData.email} onChange={handleInputChange} required />
-        {/* AVISO ADICIONADO ABAIXO DO CAMPO DE EMAIL */}
-        <small className={styles.fieldDescription} style={{ marginTop: '0.5rem' }}>Este endereço será utilizado para comunicações gerais.</small>
       </div>
       <div className={styles.inputGrid}>
         <div className={`${styles.inputGroup} ${validationErrors.includes('nacionalidade') ? styles.error : ''}`}>
@@ -77,12 +84,8 @@ const Step1_PersonalData: React.FC<StepProps> = ({ form }) => {
         <div className={`${styles.inputGroup} ${validationErrors.includes('numero') ? styles.error : ''}`}><label htmlFor="numero">Número *</label><input type="text" name="numero" id="numero" value={formData.numero} onChange={handleInputChange} required /></div>
         <div className={styles.inputGroup}><label htmlFor="complemento">Complemento (Edifício, Apto, etc.)</label><input type="text" name="complemento" id="complemento" value={formData.complemento} onChange={handleInputChange} /></div>
       </div>
-
-      {/* CAMPO DE TELEFONE E CAMPO DE EMAIL DE COMUNICAÇÃO REMOVIDO */}
-      <div className={`${styles.inputGroup} ${validationErrors.includes('telefone') ? styles.error : ''}`} style={{ marginTop: '1.5rem' }}>
-        <label htmlFor="telefone">Telefone para Contato (com DDD) *</label>
-        <input type="tel" name="telefone" id="telefone" value={formData.telefone} onChange={handleInputChange} required maxLength={15} />
-      </div>
+       <div className={`${styles.inputGroup} ${validationErrors.includes('telefone') ? styles.error : ''}`} style={{marginTop: '1.5rem'}}><label htmlFor="telefone">Telefone para Contato (com DDD) *</label><input type="tel" name="telefone" id="telefone" value={formData.telefone} onChange={handleInputChange} required maxLength={15} /></div>
+      
 
       {formData.estadoCivil === 'Casado(a)' && (
         <div className={styles.conjugeSection}>
@@ -105,4 +108,4 @@ const Step1_PersonalData: React.FC<StepProps> = ({ form }) => {
   );
 };
 
-export default Step1_PersonalData;
+export default Step1_DadosFiador;

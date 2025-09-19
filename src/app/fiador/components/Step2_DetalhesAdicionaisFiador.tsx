@@ -1,23 +1,22 @@
 import React from 'react';
-import styles from '../cadastro.module.css';
-import { useCadastroForm } from '../hooks/useCadastroForm';
+import styles from '@/app/cadastro/cadastro.module.css';
+import { useFiadorForm } from '../hooks/useFiadorForm';
 
 interface StepProps {
-  form: ReturnType<typeof useCadastroForm>;
+  form: ReturnType<typeof useFiadorForm>;
 }
 
-const Step2_AdditionalDetails: React.FC<StepProps> = ({ form }) => {
+const Step2_DetalhesAdicionaisFiador: React.FC<StepProps> = ({ form }) => {
   const { formData, validationErrors, handleInputChange, nextStep, prevStep } = form;
 
   return (
     <div className={`${styles.formStep} ${styles.animateFadeIn}`}>
-      <h2 className={styles.stepTitle}>Detalhes Adicionais</h2>
+      <h2 className={styles.stepTitle}>Detalhes Adicionais do Fiador</h2>
       <div className={`${styles.inputGroup} ${validationErrors.includes('rendaMensal') ? styles.error : ''}`}>
         <label htmlFor="rendaMensal">Renda mensal (média) *</label>
         <input type="text" name="rendaMensal" id="rendaMensal" value={formData.rendaMensal} onChange={handleInputChange} placeholder="R$ 0,00" required />
       </div>
 
-      {/* CAMPOS DE REFERÊNCIA PESSOAL DIVIDIDOS */}
       <div className={styles.inputGroup}>
         <label>Referência Pessoal 01 *</label>
         <div className={styles.inputGrid}>
@@ -41,11 +40,7 @@ const Step2_AdditionalDetails: React.FC<StepProps> = ({ form }) => {
             </div>
         </div>
       </div>
-
-      <div className={`${styles.inputGroup} ${validationErrors.includes('animaisEstimacao') ? styles.error : ''}`}>
-        <label htmlFor="animaisEstimacao">Tem ou pretende ter animais de estimação morando no mesmo imóvel? Se sim, quantos e quais? *</label>
-        <input type="text" name="animaisEstimacao" id="animaisEstimacao" value={formData.animaisEstimacao} onChange={handleInputChange} required />
-      </div>
+      
       <div className={`${styles.inputGroup} ${validationErrors.includes('cartorioFirma') ? styles.error : ''}`}>
         <label htmlFor="cartorioFirma">Em qual cartório tem firma aberta? *</label>
         <input type="text" name="cartorioFirma" id="cartorioFirma" value={formData.cartorioFirma} onChange={handleInputChange} required />
@@ -58,4 +53,4 @@ const Step2_AdditionalDetails: React.FC<StepProps> = ({ form }) => {
   );
 };
 
-export default Step2_AdditionalDetails;
+export default Step2_DetalhesAdicionaisFiador;

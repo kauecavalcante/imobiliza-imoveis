@@ -15,7 +15,8 @@ export const validateStep = (step: number, formData: IFormData): string[] => {
 
   switch (step) {
     case 1:
-      requiredFields = ['nomeCompleto', 'email', 'nacionalidade', 'profissao', 'estadoCivil', 'rg', 'cpf', 'cep', 'rua', 'numero', 'telefone', 'emailComunicacao'];
+      // Campo emailComunicacao removido dos campos obrigatórios
+      requiredFields = ['nomeCompleto', 'email', 'nacionalidade', 'profissao', 'estadoCivil', 'rg', 'cpf', 'cep', 'rua', 'numero', 'telefone'];
       if (formData.nacionalidade === 'Outra') requiredFields.push('nacionalidadeOutra');
       if (formData.estadoCivil === 'Casado(a)') {
         requiredFields.push('conjugeNome', 'conjugeNacionalidade', 'conjugeProfissao', 'conjugeRg', 'conjugeCpf', 'conjugeTelefone');
@@ -23,7 +24,8 @@ export const validateStep = (step: number, formData: IFormData): string[] => {
       }
       break;
     case 2:
-      requiredFields = ['rendaMensal', 'referenciaPessoal01', 'referenciaPessoal02', 'animaisEstimacao', 'cartorioFirma'];
+      // Campos de referência atualizados para os novos campos divididos
+      requiredFields = ['rendaMensal', 'referenciaPessoal01Nome', 'referenciaPessoal01Telefone', 'referenciaPessoal02Nome', 'referenciaPessoal02Telefone', 'animaisEstimacao', 'cartorioFirma'];
       break;
     case 3:
       requiredFields = ['imovelDesejado', 'condicaoProposta', 'garantiaContratual'];
@@ -44,20 +46,16 @@ export const validateStep = (step: number, formData: IFormData): string[] => {
     if (formData.cpf && !validateCPF(formData.cpf)) {
       errors.push('cpf');
     }
-    // Adiciona a validação para os campos de e-mail da primeira etapa
     if (formData.email && !validateEmail(formData.email)) {
       errors.push('email');
     }
-    if (formData.emailComunicacao && !validateEmail(formData.emailComunicacao)) {
-      errors.push('emailComunicacao');
-    }
+    // Validação do emailComunicacao removida
     if (formData.estadoCivil === 'Casado(a)' && formData.conjugeCpf && !validateCPF(formData.conjugeCpf)) {
       errors.push('conjugeCpf');
     }
   }
 
   if (step === 3) {
-    // Adiciona a validação para o e-mail do fiador na terceira etapa
     if (formData.garantiaContratual === 'FIADOR' && formData.emailFiador && !validateEmail(formData.emailFiador)) {
       errors.push('emailFiador');
     }

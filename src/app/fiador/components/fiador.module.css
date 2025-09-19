@@ -1,0 +1,48 @@
+/*
+  Arquivo de estilos específico para o formulário do fiador.
+  Isso evita conflitos com o formulário principal.
+*/
+
+.progressBarFiador {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    position: relative;
+    /* Para 3 etapas, centralizamos melhor com uma largura menor */
+    max-width: 450px; 
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .progressBarFiador::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 100%;
+    background-color: #e0e0e0;
+    z-index: 1;
+  }
+  
+  .progressBarFiador::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    background-color: var(--primary-blue);
+    z-index: 2;
+    /* O cálculo da largura agora é baseado em 50% para cada passo (3-1) */
+    width: calc((var(--step, 1) - 1) * 50%); 
+    transition: width 0.4s ease;
+  }
+  
+  /* O restante dos estilos para .progressStep, .active, etc., podem ser
+     reutilizados do `cadastro.module.css` se você os importar, ou
+     copiados para cá se preferir manter totalmente separado.
+     Por simplicidade, vamos assumir que o `cadastro.module.css` ainda será importado
+     na página do fiador e apenas a classe principal `.progressBarFiador` mudará.
+  */

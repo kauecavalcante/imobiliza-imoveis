@@ -1,5 +1,5 @@
-// src/app/cadastro/types/index.ts
-export interface IFormData {
+// src/app/fiador/types/index.ts
+export interface IFormDataFiador {
   email: string;
   nomeCompleto: string;
   nacionalidade: string;
@@ -16,7 +16,6 @@ export interface IFormData {
   cidade: string;
   estado: string;
   telefone: string;
-  // O campo emailComunicacao foi removido
   conjugeNome: string;
   conjugeNacionalidade: string;
   conjugeNacionalidadeOutra: string;
@@ -25,25 +24,20 @@ export interface IFormData {
   conjugeCpf: string;
   conjugeTelefone: string;
   rendaMensal: string;
-  // Campos de referência pessoal foram divididos
   referenciaPessoal01Nome: string;
   referenciaPessoal01Telefone: string;
   referenciaPessoal02Nome: string;
   referenciaPessoal02Telefone: string;
-  imovelDesejado: string;
-  condicaoProposta: string;
-  vencimentoAluguel: string;
-  animaisEstimacao: string;
-  garantiaContratual: string;
-  emailFiador: string;
   cartorioFirma: string;
+  dataPreenchimento: string;
+  locatarioPrincipal: string;
+  // Campos de aceite adicionados
   aceiteObservacoes: boolean;
   aceiteReserva: boolean;
   aceiteVeracidade: boolean;
-  dataPreenchimento: string;
 }
 
-export interface IFileState {
+export interface IFileStateFiador {
   documentosPessoais: File[];
   comprovanteRenda: File[];
   documentosConjuge: File[];
