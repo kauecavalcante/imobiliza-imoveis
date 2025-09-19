@@ -26,7 +26,6 @@ const initialState: IFormData = {
     cidade: '',
     estado: '',
     telefone: '',
-    // emailComunicacao removido
     conjugeNome: '',
     conjugeNacionalidade: 'Brasileiro(a)',
     conjugeNacionalidadeOutra: '',
@@ -35,7 +34,6 @@ const initialState: IFormData = {
     conjugeCpf: '',
     conjugeTelefone: '',
     rendaMensal: '',
-    // Campos de referência divididos
     referenciaPessoal01Nome: '',
     referenciaPessoal01Telefone: '',
     referenciaPessoal02Nome: '',
@@ -174,7 +172,6 @@ export const useCadastroForm = () => {
             toast.error('Você deve concordar com todos os termos para finalizar.');
             return;
         }
-        // Validação de arquivos removida para torná-los opcionais
         setIsLoading(true);
 
         try {
@@ -242,6 +239,18 @@ export const useCadastroForm = () => {
                     files: filesForEmail
                 })
             });
+
+            // NOVO: Bloco para enviar e-mail para o fiador
+            if (finalFormData.garantiaContratual === 'FIADOR' && finalFormData.emailFiador) {
+                await fetch('/api/send-to-fiador', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        locatarioNome: finalFormData.nomeCompleto,
+                        emailFiador: finalFormData.emailFiador
+                    })
+                });
+            }
 
             setIsSuccess(true);
         } catch (err) {

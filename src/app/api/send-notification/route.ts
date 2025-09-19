@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
                 ${dataItem('Complemento', formData.complemento, true)}
               </div>
 
-              {/* ATUALIZADO: Seção de Contato agora inclui o E-mail */}
+              
               <h2>Contato</h2>
               <div class="data-grid">
                 ${dataItem('Telefone Principal', formData.telefone)}
