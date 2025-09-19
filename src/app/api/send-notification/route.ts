@@ -5,6 +5,18 @@ import { Resend } from 'resend';
 // Inicializa o cliente do Resend com a chave de API das variáveis de ambiente
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// NOVO: Adicionada função para formatar como moeda
+const formatCurrency = (value: string | number) => {
+  const numericValue = typeof value === 'string' ? parseFloat(value) / 100 : value / 100;
+  if (isNaN(numericValue)) {
+    return "Não informado";
+  }
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(numericValue);
+};
+
 export async function POST(request: NextRequest) {
   try {
     const { formData, files } = await request.json();
@@ -17,7 +29,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'Proposta salva, mas notificação falhou internamente.' });
     }
     
-    // Constrói a URL base para a imagem do logo. Em produção, use a URL do seu site.
     const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
     const logoUrl = `${baseUrl}/logo-imobiliza.png`;
 
@@ -32,12 +43,14 @@ export async function POST(request: NextRequest) {
       `;
     };
     
+    // ATUALIZADO: A função dataItem agora formata a renda
     const dataItem = (label: string, value: string | boolean | number, fullWidth = false) => {
         if (!value) return '';
+        const displayValue = label === 'Renda Mensal (média)' ? formatCurrency(value as string) : value;
         return `<div class="data-item ${fullWidth ? 'full-width' : ''}">
                   <p>
                     <strong>${label}</strong>
-                    <span>${value}</span>
+                    <span>${displayValue}</span>
                   </p>
                 </div>`;
     };
@@ -126,10 +139,11 @@ export async function POST(request: NextRequest) {
                 ${dataItem('Complemento', formData.complemento, true)}
               </div>
 
+              {/* ATUALIZADO: Seção de Contato agora inclui o E-mail */}
               <h2>Contato</h2>
               <div class="data-grid">
                 ${dataItem('Telefone Principal', formData.telefone)}
-                ${dataItem('E-mail para Comunicações', formData.emailComunicacao)}
+                ${dataItem('E-mail', formData.email)}
               </div>
 
               ${conjugeSection}
@@ -137,8 +151,8 @@ export async function POST(request: NextRequest) {
               <h2>Detalhes Adicionais</h2>
               <div class="data-grid">
                 ${dataItem('Renda Mensal (média)', formData.rendaMensal)}
-                ${dataItem('Referência Pessoal 01', formData.referenciaPessoal01)}
-                ${dataItem('Referência Pessoal 02', formData.referenciaPessoal02)}
+                ${dataItem('Referência Pessoal 01', `${formData.referenciaPessoal01Nome} - ${formData.referenciaPessoal01Telefone}`)}
+                ${dataItem('Referência Pessoal 02', `${formData.referenciaPessoal02Nome} - ${formData.referenciaPessoal02Telefone}`)}
                 ${dataItem('Animais de Estimação', formData.animaisEstimacao, true)}
                 ${dataItem('Cartório com Firma Aberta', formData.cartorioFirma, true)}
               </div>

@@ -166,7 +166,7 @@ export const useFiadorForm = (locatario: string | null) => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        if (!formData.aceiteObservacoes || !formData.aceiteReserva || !formData.aceiteVeracidade) {
+        if (!formData.aceiteObservacoes || !formData.aceiteVeracidade) {
             toast.error('Você deve concordar com todos os termos para finalizar.');
             return;
         }

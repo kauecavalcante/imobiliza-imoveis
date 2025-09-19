@@ -31,9 +31,9 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
     const logoUrl = `${baseUrl}/logo-imobiliza.png`;
 
-
+    // ATUALIZAÇÃO 1: Lógica para exibir "Nenhum arquivo anexado"
     const createFileList = (title: string, fileList: { name: string, url: string }[]) => {
-      if (!fileList || fileList.length === 0) return '';
+      if (!fileList || fileList.length === 0) return '<p>Nenhum arquivo anexado.</p>';
       return `
         <p style="margin-top: 15px; margin-bottom: 5px;"><strong>${title}:</strong></p>
         <ul style="margin: 0; padding-left: 20px; list-style-type: none;">
@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
     
     const dataItem = (label: string, value: string | boolean | number | undefined, fullWidth = false) => {
         if (!value) return '';
-        // Aplica a formatação se o campo for 'Renda Mensal (média)'
         const displayValue = label === 'Renda Mensal (média)' ? formatCurrency(value as string) : value;
         return `<div class="data-item ${fullWidth ? 'full-width' : ''}">
                   <p>
@@ -65,6 +64,16 @@ export async function POST(request: NextRequest) {
         ${dataItem('Telefone', formData.conjugeTelefone)}
       </div>
     ` : '';
+
+    // ATUALIZAÇÃO 2: Lógica para o título e cabeçalho do e-mail
+    const submissionDate = new Date(formData.dataPreenchimento).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    let subjectLine = `Novo Cadastro de Fiador recebido em ${submissionDate}`;
+    let mainHeaderText = `<p>Recebido em <strong>${submissionDate}</strong>.</p>`;
+
+    if (formData.locatarioPrincipal && formData.locatarioPrincipal !== 'Não identificado') {
+      subjectLine = `Novo Cadastro de Fiador para ${formData.locatarioPrincipal}`;
+      mainHeaderText = `<p>Fiador de <strong>${formData.locatarioPrincipal}</strong>.</p>`;
+    }
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -105,7 +114,7 @@ export async function POST(request: NextRequest) {
             </div>
             <div class="content">
               <h1>Cadastro de Fiador Recebido</h1>
-              <p>Fiador de <strong>${formData.locatarioPrincipal || 'Locatário não especificado'}</strong>.</p>
+              ${mainHeaderText}
               
               <h2>Dados Pessoais do Fiador</h2>
               <div class="data-grid">
@@ -162,7 +171,7 @@ export async function POST(request: NextRequest) {
     await resend.emails.send({
       from: `Imobiliza Imóveis <${fromEmail}>`,
       to: adminEmail,
-      subject: `Novo Cadastro de Fiador para ${formData.locatarioPrincipal}`,
+      subject: subjectLine, // Usa a linha de assunto dinâmica
       html: emailHtml,
     });
 
